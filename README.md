@@ -4,6 +4,8 @@ Created by me when I get f**ked by macOS's firewall. Can't accept inbound connec
 
 To bypass the limitation, a layer 4 forwarder is needed.
 
+Currently only tcp
+
 # Install 
 TODO: make it go-installable
 
