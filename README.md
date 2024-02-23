@@ -7,7 +7,9 @@ To bypass the limitation, a layer 4 forwarder is needed.
 Currently only tcp
 
 # Install 
+```bash
 go install github.com/bookqaq/layer-four-forwarder@latest
+```
 
 # Usage
 ```bash
