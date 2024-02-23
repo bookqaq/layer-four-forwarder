@@ -7,7 +7,7 @@ To bypass the limitation, a layer 4 forwarder is needed.
 Currently only tcp
 
 # Install 
-TODO: make it go-installable
+go install github.com/bookqaq/layer-four-forwarder@latest
 
 # Usage
 ```bash
