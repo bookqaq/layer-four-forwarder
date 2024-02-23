@@ -11,7 +11,7 @@ import (
 
 func main() {
 	srcAddr := flag.String("src", "0.0.0.0:8080", "tcp listen address")
-	dstAddr := flag.String("dst", "127.0.0.1:8081", "tcp forward to address")
+	dstAddr := flag.String("dst", "127.0.0.1:8081", "tcp forward address")
 	flag.Parse()
 
 	// listen on port, ask macOS for privilege to receive inbound connection
@@ -22,6 +22,7 @@ func main() {
 	}
 
 	fmt.Printf("[*] Start listening on: %s\n", *srcAddr)
+	fmt.Printf("[*] Forwarding to: %s\n", *dstAddr)
 	for {
 		cl, err := listener.Accept()
 		if err != nil {
@@ -37,7 +38,7 @@ func handleServerMessage(connR, connL net.Conn, closer *sync.Once) {
 	// see comments in handleConnection
 	// this is the same, just inverse, reads from server, writes to client
 	closeFunc := func() {
-		fmt.Println("[*] Connections closed.")
+		fmt.Println("[*] Connections closed:", connR.LocalAddr(), "--", connR.RemoteAddr())
 		_ = connL.Close()
 		_ = connR.Close()
 	}
@@ -65,7 +66,7 @@ func handleConnection(connL net.Conn, dstAddr string) {
 
 	// make sure connections get closed
 	closeFunc := func() {
-		fmt.Println("[*] Connections closed")
+		fmt.Println("[*] Connections closed:", connL.RemoteAddr().String(), "--", connL.LocalAddr().String())
 		_ = connL.Close()
 		_ = connR.Close()
 	}
@@ -91,5 +92,4 @@ func handleConnection(connL net.Conn, dstAddr string) {
 	// ensure connections are closed. With the sync, this will either happen here
 	// or in the handleServerMessage function
 	closer.Do(closeFunc)
-
 }
